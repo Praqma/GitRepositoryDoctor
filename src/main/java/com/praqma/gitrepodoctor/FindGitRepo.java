@@ -22,11 +22,14 @@ public class FindGitRepo implements FindGitRepoIF{
         
     @Override
     public List<File> getRepoFiles(String pathToFolder) throws IOException{
+        FileUtils fu = new FileUtils();
+        
         List<File> files = new ArrayList<>();
         
         try(Stream<Path> fileStream = Files.find(Paths.get(pathToFolder), 999, (p, bfa) -> bfa.isRegularFile())){
             fileStream
                     .filter(file -> file.getFileName().toString().matches("^((?!.git).)*$"))
+                    .filter(file -> 0 == fu.isGitBinary(file.toFile()))
                     .forEach(file -> files.add(file.getFileName().toFile()));
             fileStream.close();
         }
