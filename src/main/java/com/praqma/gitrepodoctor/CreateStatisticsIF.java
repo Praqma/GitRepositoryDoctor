@@ -15,10 +15,10 @@ import java.util.List;
 public interface CreateStatisticsIF {
     
     // Sum up the total repository size in KiloByte as Double
-    Long getRepoSize(List<File> files);
+    long getRepoSize(List<File> files);
     
     // Takes a List of Files and uses it's data to create report files
-    List<File> createReportFiles(List<File> files);
+    List<FileInformation> createReportFiles(List<File> files);
     
     // Takes a List of Files and uses it's data to create a report as JSON
     String createReportJSON(List<File> files);
