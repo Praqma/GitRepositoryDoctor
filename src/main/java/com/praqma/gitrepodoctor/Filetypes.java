@@ -5,16 +5,10 @@
  */
 package com.praqma.gitrepodoctor;
 
-import java.io.File;
-
 /**
  *
  * @author florenthaxha
  */
-public interface FileUtilsIF {
-      
-    int isGitBinary(File file);
-    
-    String isFileBinary(File file);
-
+public enum Filetypes {
+    GIT_ASCII, GIT_BINARY, FILE_ASCII, FILE_EMPTY, FILE_BINARY;
 }

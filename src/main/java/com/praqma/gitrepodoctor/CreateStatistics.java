@@ -14,8 +14,13 @@ import java.util.List;
  */
 public class CreateStatistics implements CreateStatisticsIF{
 
+    /**
+     *
+     * @param files
+     * @return Long representing Actual repository size in Kilobyte
+     */
     @Override
-    public double getRepoSize(List<File> files) {
+    public Long getRepoSize(List<File> files) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

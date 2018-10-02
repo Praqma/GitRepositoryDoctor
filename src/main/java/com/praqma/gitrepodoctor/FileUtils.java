@@ -47,24 +47,19 @@ public class FileUtils implements FileUtilsIF {
     }
 
     @Override
-    public int isFileBinary(File file) {
+    public String isFileBinary(File file) {
         try {
             Path path = file.toPath();
             if (Files.probeContentType(path) == null) {
-                return 2;
+                return Filetypes.FILE_EMPTY.toString();
             } else if (Files.probeContentType(path).contains("text")) {
-                return 0;
+                return Filetypes.FILE_ASCII.toString();
             }
         } catch (IOException ex) {
             Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return 1;
-    }
-
-    @Override
-    public double getFileSize(File file) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Filetypes.FILE_ASCII.toString();
     }
 
 }

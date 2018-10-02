@@ -14,8 +14,8 @@ import java.util.List;
  */
 public interface CreateStatisticsIF {
     
-    // Sum up the total repository size in MegaByte as Double
-    double getRepoSize(List<File> files);
+    // Sum up the total repository size in KiloByte as Double
+    Long getRepoSize(List<File> files);
     
     // Takes a List of Files and uses it's data to create report files
     List<File> createReportFiles(List<File> files);
