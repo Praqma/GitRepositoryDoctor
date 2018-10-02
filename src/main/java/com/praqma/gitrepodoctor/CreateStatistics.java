@@ -25,7 +25,7 @@ public class CreateStatistics implements CreateStatisticsIF{
         for (int i = 0; i < files.size(); i++) {
             RepoSize += files.get(i).getTotalSpace();
         }
-        return RepoSize;
+        return RepoSize / 1024;
     }
 
     /**

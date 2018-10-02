@@ -6,18 +6,31 @@ package gitrepodoctortest;
  * and open the template in the editor.
  */
 
+import com.praqma.gitrepodoctor.FindGitRepo;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
 
 /**
  *
  * @author florenthaxha
  */
 public class FindGitRepoTest {
+    
+    public FindGitRepo fg = new FindGitRepo();
+    
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
     
     public FindGitRepoTest() {
     }
@@ -38,9 +51,19 @@ public class FindGitRepoTest {
     public void tearDown() {
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    @Test
+    public void FilterGit() throws IOException{
+        File a = folder.newFile("filea.txt");
+        File b = folder.newFile("fileb.txt");
+        File c = folder.newFile("filec.png");
+        File d = folder.newFile(".git");
+        File e = folder.newFile("filee.java");
+        
+        List<File> testList;
+        System.out.println(folder.getRoot().getCanonicalPath());
+        testList = fg.getRepoFiles("/Users/florenthaxha/School/JavaApplication12");
+        System.out.println(testList.size());
+        //assertThat(testList, hasItem(e));
+        
+    }
 }
