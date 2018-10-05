@@ -36,8 +36,8 @@ public class FileUtils implements FileUtilsIF {
             while ((line = reader.readLine()) != null) {                
                 output.append(line);
             }
-            
-            if(output.toString().contains("-    -   "+ filename)){ return Filetypes.GIT_BINARY.toString(); }
+            System.out.println(output.toString());
+            if(output.toString().contains("-	-	/dev/null => " + filename)){ return Filetypes.GIT_BINARY.toString(); }
 
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,14 +52,14 @@ public class FileUtils implements FileUtilsIF {
             Path path = file.toPath();
             if (Files.probeContentType(path) == null) {
                 return Filetypes.FILE_EMPTY.toString();
-            } else if (Files.probeContentType(path).contains("text")) {
+            } else if (Files.probeContentType(path).contains(" text")) {
                 return Filetypes.FILE_ASCII.toString();
             }
         } catch (IOException ex) {
             Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return Filetypes.FILE_ASCII.toString();
+        return Filetypes.FILE_BINARY.toString();
     }
 
 }
