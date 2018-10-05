@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class FileUtils implements FileUtilsIF {
 
     @Override
-    public int isGitBinary(File file) {
+    public String isGitBinary(File file) {
         StringBuilder output = new StringBuilder();
         String filename = file.getName();
         
@@ -37,13 +37,13 @@ public class FileUtils implements FileUtilsIF {
                 output.append(line);
             }
             
-            if(output.toString().contains("-    -   "+ filename)){ return 0; }
+            if(output.toString().contains("-    -   "+ filename)){ return Filetypes.GIT_BINARY.toString(); }
 
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return 1;
+        return Filetypes.GIT_ASCII.toString();
     }
 
     @Override

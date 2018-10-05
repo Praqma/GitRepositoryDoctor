@@ -42,6 +42,6 @@ public class FileUtilsTest {
     @Test
     @DisplayName("Test that Git Binaries are found")
     public void testForGitBinary(){
-    
+        
     }
 }

@@ -13,7 +13,7 @@ import java.io.File;
  */
 public interface FileUtilsIF {
       
-    int isGitBinary(File file);
+    String isGitBinary(File file);
     
     String isFileBinary(File file);
 
