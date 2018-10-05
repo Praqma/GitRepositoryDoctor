@@ -9,8 +9,12 @@ package gitrepodoctortest;
 import com.praqma.gitrepodoctor.FindGitRepo;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -58,12 +62,13 @@ public class FindGitRepoTest {
         File c = folder.newFile("filec.png");
         File d = folder.newFile(".git");
         File e = folder.newFile("filee.java");
-        
         List<File> testList;
-        System.out.println(folder.getRoot().getCanonicalPath());
-        testList = fg.getRepoFiles("/Users/florenthaxha/School/JavaApplication12");
-        System.out.println(testList.size());
-        //assertThat(testList, hasItem(e));
         
+        Process proc = Runtime.getRuntime().exec("git init "+ folder.getRoot().getCanonicalPath());
+  
+        testList = fg.getRepoFiles(folder.getRoot().getCanonicalPath());
+        
+        assertFalse(testList.contains(d));
+        assertTrue(testList.size() == 4);
     }
 }

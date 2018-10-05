@@ -37,7 +37,7 @@ public class FileUtils implements FileUtilsIF {
                 output.append(line);
             }
             
-            if(output.toString().startsWith("-    -")){ return 0; }
+            if(output.toString().contains("-    -   "+ filename)){ return 0; }
 
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
