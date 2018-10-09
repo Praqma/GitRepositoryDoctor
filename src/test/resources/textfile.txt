@@ -1,0 +1,1 @@
+this is a textfile that is used for testing and only testing all this text is just to make sure that git can see it's a ascii file :D

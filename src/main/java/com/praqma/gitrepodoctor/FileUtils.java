@@ -32,12 +32,11 @@ public class FileUtils implements FileUtilsIF {
             
             BufferedReader reader = new BufferedReader(new InputStreamReader(exec.getInputStream()));
             
-            String line = "";
+            String line;
             while ((line = reader.readLine()) != null) {                
                 output.append(line);
             }
-            System.out.println(output.toString());
-            if(output.toString().contains("-       -       /dev/null => " + filename)){ return Filetypes.GIT_BINARY.toString(); }
+            if(output.toString().contains("-	-	/dev/null => " + filename)){ return Filetypes.GIT_BINARY.toString(); }
 
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
@@ -51,7 +50,6 @@ public class FileUtils implements FileUtilsIF {
         Tika mimeDetecter = new Tika();
         try {
             String mimeType = mimeDetecter.detect(file);
-            Path path = file.toPath();
             if (mimeType == null) {
                 return Filetypes.FILE_EMPTY.toString();
             } else if (mimeType.contains("text")) {

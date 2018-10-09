@@ -33,10 +33,8 @@ public class FileUtilsTest {
     
     FileUtils fu = new FileUtils();
     
-    File a, b, c, d, tf;
-    
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+    File textFile, noMimetype, binaryFile;
+    String userdir = System.getProperty("user.dir");
     
     public FileUtilsTest() {
     }
@@ -52,40 +50,38 @@ public class FileUtilsTest {
     @Before
     public void setUp() throws IOException {
         
-        a = folder.newFile("filea.txt");
-        BufferedWriter bw = new BufferedWriter(new FileWriter(a, true));
-        bw.append("This is a text file with text and i should be caught as a ascii file");
-        b = folder.newFile("fileb.img");
+        Files.copy(Paths.get("src/test/resources/test.img"), Paths.get(userdir + "/test.img"), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(Paths.get("src/test/resources/textfile.txt"), Paths.get(userdir + "/textfile.txt"), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(Paths.get("src/test/resources/noMimetype"), Paths.get(userdir + "/noMimetype"), StandardCopyOption.REPLACE_EXISTING);
+        textFile = new File(userdir + "/textfile.txt");
+        noMimetype = new File(userdir + "/noMimetype");
+        binaryFile = new File(userdir + "/test.img");
         
-        Files.copy(Paths.get("src/test/resources/test.img"), Paths.get(folder.getRoot().getAbsolutePath()+ "/test.img"), StandardCopyOption.REPLACE_EXISTING);
-        c = new File(folder.getRoot().getAbsolutePath()+ "/test.img");
-        d = folder.newFile("filee.java");
     }
     
     @After
     public void tearDown() throws IOException {
-        folder.delete();
         
+        Files.delete(Paths.get(textFile.getAbsolutePath()));
+        Files.delete(Paths.get(noMimetype.getAbsolutePath()));
+        Files.delete(Paths.get(binaryFile.getAbsolutePath()));
     }
 
     @Test
     @DisplayName("Test that Files are catagolized correctly by Git")
     public void testForGitBinary() throws IOException {
         
-        Runtime.getRuntime().exec("git init "+ folder.getRoot().getCanonicalPath());
-
-        assertTrue(fu.isGitBinary(a).equals(Filetypes.GIT_ASCII.toString()));
-        assertTrue(fu.isGitBinary(c).equals(Filetypes.GIT_BINARY.toString()));
-        assertTrue(fu.isGitBinary(b).equals(Filetypes.GIT_ASCII.toString()));
+        assertTrue(fu.isGitBinary(textFile).equals(Filetypes.GIT_ASCII.toString()));
+        assertTrue(fu.isGitBinary(binaryFile).equals(Filetypes.GIT_BINARY.toString()));
+        assertTrue(fu.isGitBinary(noMimetype).equals(Filetypes.GIT_ASCII.toString()));
     }
     
     @Test
     @DisplayName("Test that Files are catagolized correctly")
     public void testForFileBinary() throws IOException{
         
-        Runtime.getRuntime().exec("git init "+ folder.getRoot().getCanonicalPath());
-        
-        assertTrue(fu.isFileBinary(a).equals(Filetypes.FILE_ASCII.toString()));
-        assertTrue(fu.isFileBinary(c).equals(Filetypes.FILE_BINARY.toString()));
+        assertTrue(fu.isFileBinary(textFile).equals(Filetypes.FILE_ASCII.toString()));
+        assertTrue(fu.isFileBinary(binaryFile).equals(Filetypes.FILE_BINARY.toString()));
+        assertTrue(fu.isFileBinary(noMimetype).equals(Filetypes.FILE_EMPTY.toString()));
     }
 }
