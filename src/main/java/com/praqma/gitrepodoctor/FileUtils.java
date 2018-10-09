@@ -9,10 +9,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.tika.Tika;
 
 /**
  *
@@ -37,7 +37,7 @@ public class FileUtils implements FileUtilsIF {
                 output.append(line);
             }
             System.out.println(output.toString());
-            if(output.toString().contains("-	-	/dev/null => " + filename)){ return Filetypes.GIT_BINARY.toString(); }
+            if(output.toString().contains("-       -       /dev/null => " + filename)){ return Filetypes.GIT_BINARY.toString(); }
 
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
@@ -48,11 +48,13 @@ public class FileUtils implements FileUtilsIF {
 
     @Override
     public String isFileBinary(File file) {
+        Tika mimeDetecter = new Tika();
         try {
+            String mimeType = mimeDetecter.detect(file);
             Path path = file.toPath();
-            if (Files.probeContentType(path) == null) {
+            if (mimeType == null) {
                 return Filetypes.FILE_EMPTY.toString();
-            } else if (Files.probeContentType(path).contains(" text")) {
+            } else if (mimeType.contains("text")) {
                 return Filetypes.FILE_ASCII.toString();
             }
         } catch (IOException ex) {

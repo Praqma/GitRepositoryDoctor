@@ -12,8 +12,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -50,41 +51,41 @@ public class FileUtilsTest {
     
     @Before
     public void setUp() throws IOException {
+        
         a = folder.newFile("filea.txt");
         BufferedWriter bw = new BufferedWriter(new FileWriter(a, true));
-        bw.append(" ");
-        bw.append(" ehwiehwaojr wjoeqkowek yeeet");
-        b = folder.newFile("fileb.tar");
-        c = folder.newFile("filec.png");
+        bw.append("This is a text file with text and i should be caught as a ascii file");
+        b = folder.newFile("fileb.img");
+        
+        Files.copy(Paths.get("src/test/resources/test.img"), Paths.get(folder.getRoot().getAbsolutePath()+ "/test.img"), StandardCopyOption.REPLACE_EXISTING);
+        c = new File(folder.getRoot().getAbsolutePath()+ "/test.img");
         d = folder.newFile("filee.java");
-        // creates a 1mb binary file used for testing purpose. 
-        Runtime.getRuntime().exec("dd if=/dev/zero of=test.img bs=1024 count=0 seek=1024");
     }
     
     @After
-    public void tearDown() {
+    public void tearDown() throws IOException {
         folder.delete();
+        
     }
 
     @Test
-    @DisplayName("Test that Git Files are catagolized correctly")
+    @DisplayName("Test that Files are catagolized correctly by Git")
     public void testForGitBinary() throws IOException {
         
-        tf = new File(folder.getRoot().getCanonicalPath()+ "/test.img");
         Runtime.getRuntime().exec("git init "+ folder.getRoot().getCanonicalPath());
-        
-        assertTrue(fu.isGitBinary(tf).equals(Filetypes.GIT_BINARY.toString()));
+
         assertTrue(fu.isGitBinary(a).equals(Filetypes.GIT_ASCII.toString()));
+        assertTrue(fu.isGitBinary(c).equals(Filetypes.GIT_BINARY.toString()));
+        assertTrue(fu.isGitBinary(b).equals(Filetypes.GIT_ASCII.toString()));
     }
     
     @Test
     @DisplayName("Test that Files are catagolized correctly")
     public void testForFileBinary() throws IOException{
         
-        tf = new File(folder.getRoot().getCanonicalPath()+ "/test.img");
         Runtime.getRuntime().exec("git init "+ folder.getRoot().getCanonicalPath());
-        System.out.println(fu.isFileBinary(new File("/Users/florenthaxha/School/deletemee/meascii.txt")));
-        //assertTrue(fu.isFileBinary(a).equals(Filetypes.FILE_ASCII.toString()));
         
+        assertTrue(fu.isFileBinary(a).equals(Filetypes.FILE_ASCII.toString()));
+        assertTrue(fu.isFileBinary(c).equals(Filetypes.FILE_BINARY.toString()));
     }
 }
