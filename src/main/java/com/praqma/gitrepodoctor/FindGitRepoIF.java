@@ -7,6 +7,7 @@ package com.praqma.gitrepodoctor;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -16,6 +17,6 @@ import java.util.List;
 public interface FindGitRepoIF {
     
     // Read all files from a specific folder & returns a list of all files
-    List<File> getRepoFiles(String pathToFolder) throws IOException;
+    List<File> getRepoFiles(Path pathToFolder) throws IOException;
     
 }

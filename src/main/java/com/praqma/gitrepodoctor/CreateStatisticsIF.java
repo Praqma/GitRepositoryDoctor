@@ -14,14 +14,11 @@ import java.util.List;
  */
 public interface CreateStatisticsIF {
     
-    // Sum up the total repository size in KiloByte as Double
-    long getRepoSize(List<File> files);
-    
     // Takes a List of Files and uses it's data to create report files
-    List<FileInformation> createReportFiles(List<File> files);
+    List<FileInformation> createReportFiles(String pathToFolder);
     
     // Takes a List of Files and uses it's data to create a report as JSON
-    String createReportJSON(List<File> files);
+    String createReportJSON(String pathToFolder);
     
     // Takes a List of report Files and a Path String and saves them in that location, If no target path is given the currentDIR is used.
     void saveReportFiles(List<File> files, String targetPWD);

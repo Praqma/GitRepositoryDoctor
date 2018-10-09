@@ -14,13 +14,15 @@ public class FileInformation {
     private String filename;
     private String filepath;
     private String filetype;
+    private String gitfiletype;
     private Long fileSize;
     
     
-    public FileInformation(String fname, String fpath, String ftype, Long fsize){
+    public FileInformation(String fname, String fpath, String ftype, String gftype, Long fsize){
         this.filename = fname;
         this.filepath = fpath;
         this.filetype = ftype;
+        this.gitfiletype = gftype;
         this.fileSize = fsize;
     }
 
@@ -46,6 +48,14 @@ public class FileInformation {
 
     public void setFiletype(String filetype) {
         this.filetype = filetype;
+    }
+    
+    public String getGitfiletype() {
+        return gitfiletype;
+    }
+
+    public void setGitfiletype(String gitfiletype) {
+        this.gitfiletype = gitfiletype;
     }
 
     public Long getFileSize() {

@@ -21,12 +21,11 @@ import java.util.stream.Stream;
 public class FindGitRepo implements FindGitRepoIF{
         
     @Override
-    public List<File> getRepoFiles(String pathToFolder) throws IOException{
-        FileUtils fu = new FileUtils();
+    public List<File> getRepoFiles(Path pathToFolder) throws IOException{
         
         List<File> files = new ArrayList<>();
         
-        try(Stream<Path> fileStream = Files.find(Paths.get(pathToFolder), 999, (p, bfa) -> bfa.isRegularFile())){
+        try(Stream<Path> fileStream = Files.find(pathToFolder, 999, (p, bfa) -> bfa.isRegularFile())){
             fileStream
                     .filter(file -> file.getFileName().toString().matches("^((?!.git).)*$"))
                     .forEach(file -> files.add(file.getFileName().toFile()));

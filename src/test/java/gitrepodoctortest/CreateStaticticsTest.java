@@ -13,11 +13,8 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.rules.TemporaryFolder;
 
 /**
@@ -48,24 +45,6 @@ public class CreateStaticticsTest {
     
     @After
     public void tearDown() {
-    }
-    
-    @Test
-    @DisplayName("Collected size of all files in KB")
-    public void getRepoSizetest() throws IOException{
-        File a = folder.newFile("filea.txt");
-        File b = folder.newFile("fileb.txt");
-        File c = folder.newFile("filec.png");
-        File d = folder.newFile("filed.jpg");
-        File e = folder.newFile("filee.java");
-        files.add(a);
-        files.add(b);
-        files.add(c);
-        files.add(d);
-        files.add(e);
-        
-        assertTrue(cs.getRepoSize(files) == 1224562680);
-        assertTrue(files.size() == 5);
     }
     
 }

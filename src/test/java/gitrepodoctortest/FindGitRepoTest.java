@@ -9,19 +9,14 @@ package gitrepodoctortest;
 import com.praqma.gitrepodoctor.FindGitRepo;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 
@@ -66,7 +61,7 @@ public class FindGitRepoTest {
         
         Process proc = Runtime.getRuntime().exec("git init "+ folder.getRoot().getCanonicalPath());
   
-        testList = fg.getRepoFiles(folder.getRoot().getCanonicalPath());
+        testList = fg.getRepoFiles(Paths.get(folder.getRoot().getCanonicalPath()));
         
         assertFalse(testList.contains(d));
         assertTrue(testList.size() == 4);
