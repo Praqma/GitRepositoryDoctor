@@ -49,7 +49,7 @@ public class FileUtils implements FileUtilsIF {
         Tika mimeDetecter = new Tika();
         try {
             String mimeType = mimeDetecter.detect(file);
-            if (mimeType == null) {
+            if (file.length() == 0) {
                 return Filetypes.FILE_EMPTY.toString();
             } else if (mimeType.contains("text")) {
                 return Filetypes.FILE_ASCII.toString();
