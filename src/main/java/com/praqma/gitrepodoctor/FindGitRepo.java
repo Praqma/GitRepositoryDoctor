@@ -26,8 +26,8 @@ public class FindGitRepo implements FindGitRepoIF{
         
         try(Stream<Path> fileStream = Files.find(pathToFolder, 999, (p, bfa) -> bfa.isRegularFile())){
             fileStream
-                    .filter(file -> file.getFileName().toString().matches("^((?!.git).)*$"))
-                    .forEach(file -> files.add(file.getFileName().toFile()));
+                    .filter(file -> file.toString().matches("^(?!.*(/.git/|DS_Store)).*$"))
+                    .forEach(file -> files.add(file.toFile()));
             fileStream.close();
         }
         
