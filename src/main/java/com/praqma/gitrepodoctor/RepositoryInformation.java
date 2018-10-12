@@ -120,4 +120,16 @@ public class RepositoryInformation {
         return files;
     }
 
+    @Override
+    public String toString() {
+        return "RepositoryInformation{" + "repositoryname: " + repositoryname +
+                ", repositorypath: " + repositorypath +
+                ", repositorySize: " + repositorySize + " Byte(s)" +
+                ", repositoryfilesSize: " + repositoryfiles.size() + '}';
+    }
+
+    
+    
+    
+    
 }
