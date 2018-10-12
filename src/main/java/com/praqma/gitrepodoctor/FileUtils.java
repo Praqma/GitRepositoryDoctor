@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.tika.Tika;
+import org.apache.tika.io.IOUtils;
 
 /**
  *
@@ -25,13 +26,13 @@ public class FileUtils implements FileUtilsIF {
     public String isGitBinary(File file) {
         StringBuilder output = new StringBuilder();
         String filename = file.getName();
-        
+        BufferedReader reader = null;
         try {
             Process exec = Runtime.getRuntime().exec("git diff --no-index --numstat /dev/null " + filename);
             
             exec.waitFor();
             
-            BufferedReader reader = new BufferedReader(new InputStreamReader(exec.getInputStream()));
+            reader = new BufferedReader(new InputStreamReader(exec.getInputStream()));
             
             String line;
             while ((line = reader.readLine()) != null) {                
@@ -41,6 +42,15 @@ public class FileUtils implements FileUtilsIF {
 
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            if(reader != null){
+                try {
+                    reader.close();
+                } catch (Exception e) {
+                    Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, e);
+                }
+            }
+                
         }
 
         return Filetypes.GIT_ASCII.toString();
