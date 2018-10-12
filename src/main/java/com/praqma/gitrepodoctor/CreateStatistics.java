@@ -6,10 +6,17 @@
 package com.praqma.gitrepodoctor;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,35 +30,23 @@ public class CreateStatistics implements CreateStatisticsIF {
 
     private final FileUtils fu = new FileUtils();
     private final FindGitRepo fgr = new FindGitRepo();
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     /**
      *
-     * @param pathToFolder
-     * @return List of FileInformation Objects, See FileInformation doc for more
-     * info on values
-     */
-    @Override
-    public List<FileInformation> createReportFiles(String pathToFolder) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    /**
-     *
-     * @param pathToFolder 
+     * @param pathtoRepository this is the Repository you wish to create a report over
      * @return JSON String of FileInformation Objects
      */
     @Override
-    public String createReportJSON(String pathToFolder) {
-        Path path = Paths.get(pathToFolder);
+    public String createReportJSON(String pathtoRepository) {
+        Path path = Paths.get(pathtoRepository);
         Long repoSize = 0L;
         List<FileInformation> fileInfos = new ArrayList<>();
         List<File> files;
         try {
             files = fgr.getRepoFiles(path);
-            for (int i = 0; i < files.size(); i++) {
-                File file = files.get(i);
-                final Long fsize = file.getTotalSpace();
+            for (File file : files) {
+                Long fsize = file.length();
                 FileInformation fi = new FileInformation(
                         file.getName(),
                         file.getAbsolutePath(),
@@ -64,18 +59,44 @@ public class CreateStatistics implements CreateStatisticsIF {
         } catch (IOException ex) {
             Logger.getLogger(CreateStatistics.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        return gson.toJson(new RepositoryInformation(path.getFileName().toString(), pathToFolder, repoSize, fileInfos));
+
+        return gson.toJson(new RepositoryInformation(
+                            path.getFileName().toString(), 
+                            pathtoRepository, 
+                            repoSize, 
+                            fileInfos));
     }
 
     /**
      *
-     * @param files
-     * @param targetPWD Saves all files at the location given as targetPWD
+     * @param Json JSON String made using createReportJson()
+     * @param targetPWD File named repository_verdict_{UnixTimeStamp}.txt will be created under the targetPWD
+     * 
      */
     @Override
-    public void saveReportFiles(List<File> files, String targetPWD) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void saveJSONReport(String Json, String targetPWD) {
+        // we add unix timestamp to make sure that we don't overwrite older reports
+        Path fileToCreate = Paths.get(targetPWD).resolve("repository_verdict_" + Instant.now().getEpochSecond() + ".txt");
+        try {
+            Files.createFile(fileToCreate);
+            BufferedWriter writer = Files.newBufferedWriter(fileToCreate, Charset.defaultCharset());
+            writer.append(" ");
+            writer.append(Json);
+            
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(CreateStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
+    /**
+     *
+     * @param pathtoRepository this is the Repository you wish to create a report over
+     * @param targetPWD this is the place you want to save your report
+     */
+    @Override
+    public void createAndSaveReport(String pathtoRepository, String targetPWD) {
+        saveJSONReport(createReportJSON(pathtoRepository), targetPWD);
+    }
+    
 }

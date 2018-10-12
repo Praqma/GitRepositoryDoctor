@@ -52,18 +52,11 @@ public class FindGitRepoTest {
 
     @Test
     public void FilterGit() throws IOException{
-        File a = folder.newFile("filea.txt");
-        File b = folder.newFile("fileb.txt");
-        File c = folder.newFile("filec.png");
         File d = folder.newFile(".git");
-        File e = folder.newFile("filee.java");
         List<File> testList;
         
-        Process proc = Runtime.getRuntime().exec("git init "+ folder.getRoot().getCanonicalPath());
-  
-        testList = fg.getRepoFiles(Paths.get(folder.getRoot().getCanonicalPath()));
         
+        testList = fg.getRepoFiles(Paths.get(System.getProperty("user.dir")));
         assertFalse(testList.contains(d));
-        assertTrue(testList.size() == 4);
     }
 }

@@ -18,7 +18,9 @@ import org.apache.tika.Tika;
  * @author florenthaxha
  */
 public class FileUtils implements FileUtilsIF {
-
+    
+    final static Tika mimeDetecter = new Tika();
+    
     @Override
     public String isGitBinary(File file) {
         StringBuilder output = new StringBuilder();
@@ -46,7 +48,6 @@ public class FileUtils implements FileUtilsIF {
 
     @Override
     public String isFileBinary(File file) {
-        Tika mimeDetecter = new Tika();
         try {
             String mimeType = mimeDetecter.detect(file);
             if (file.length() == 0) {

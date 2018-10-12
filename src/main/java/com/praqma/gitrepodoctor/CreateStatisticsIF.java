@@ -5,8 +5,6 @@
  */
 package com.praqma.gitrepodoctor;
 
-import java.io.File;
-import java.util.List;
 
 /**
  *
@@ -14,13 +12,11 @@ import java.util.List;
  */
 public interface CreateStatisticsIF {
     
-    // Takes a List of Files and uses it's data to create report files
-    List<FileInformation> createReportFiles(String pathToFolder);
-    
     // Takes a List of Files and uses it's data to create a report as JSON
-    String createReportJSON(String pathToFolder);
+    String createReportJSON(String pathtoRepository);
     
-    // Takes a List of report Files and a Path String and saves them in that location, If no target path is given the currentDIR is used.
-    void saveReportFiles(List<File> files, String targetPWD);
+    // Takes a JSON String and a Path String and saves them in that location, If no target path is given the currentDIR is used.
+    void saveJSONReport(String Json, String targetPWD);
     
+    void createAndSaveReport(String pathtoRepository, String targetPWD);
 }
