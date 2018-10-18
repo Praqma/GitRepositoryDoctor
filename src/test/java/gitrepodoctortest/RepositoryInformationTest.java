@@ -8,9 +8,7 @@ package gitrepodoctortest;
 
 import com.praqma.gitrepodoctor.FileInformation;
 import com.praqma.gitrepodoctor.RepositoryInformation;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -18,20 +16,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
-
 /**
  *
  * @author florenthaxha
  */
-public class FindGitRepoTest {
+public class RepositoryInformationTest {
     
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
-    
-    public FindGitRepoTest() {
-    }
+    public RepositoryInformationTest(){}
     
     @BeforeClass
     public static void setUpClass() {
@@ -57,4 +48,5 @@ public class FindGitRepoTest {
         testList = RepositoryInformation.build(System.getProperty("user.dir")).getFiles();
         assertFalse(testList.contains(fi));
     }
+
 }
