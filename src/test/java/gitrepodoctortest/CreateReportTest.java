@@ -6,7 +6,7 @@ package gitrepodoctortest;
  * and open the template in the editor.
  */
 
-import com.praqma.gitrepodoctor.CreateStatistics;
+import com.praqma.gitrepodoctor.CreateReport;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,13 +21,13 @@ import org.junit.rules.TemporaryFolder;
  *
  * @author florenthaxha
  */
-public class CreateStaticticsTest {
+public class CreateReportTest {
     public ArrayList<File> files = new ArrayList<>();
-    public CreateStatistics cs = new CreateStatistics();
+    public CreateReport cs = new CreateReport();
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
     
-    public CreateStaticticsTest() {
+    public CreateReportTest() {
         
     }
     

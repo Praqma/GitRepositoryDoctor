@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author florenthaxha
  */
-public class CreateStatistics implements CreateStatisticsIF {
+public class CreateReport implements CreateReportIF {
     /**
      *
      * @param json JSON String made using createReportJson()
@@ -37,7 +37,7 @@ public class CreateStatistics implements CreateStatisticsIF {
                 writer.append(json);
             }
         } catch (IOException ex) {
-            Logger.getLogger(CreateStatistics.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CreateReport.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

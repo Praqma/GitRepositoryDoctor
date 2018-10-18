@@ -114,7 +114,7 @@ public class RepositoryInformation {
                     .forEach(file -> files.add(file.toFile()));
             fileStream.close();
         } catch (IOException ex) {
-            Logger.getLogger(CreateStatistics.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CreateReport.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return files;

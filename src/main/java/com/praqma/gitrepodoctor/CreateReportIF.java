@@ -10,7 +10,7 @@ package com.praqma.gitrepodoctor;
  *
  * @author florenthaxha
  */
-public interface CreateStatisticsIF {
+public interface CreateReportIF {
     
     // Takes a JSON String and a Path String and saves them in that location, If no target path is given the currentDIR is used.
     void saveJSONReport(String json, String targetPath);
