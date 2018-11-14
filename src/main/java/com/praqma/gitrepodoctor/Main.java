@@ -7,6 +7,7 @@ package com.praqma.gitrepodoctor;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 /**
  *
@@ -24,10 +25,13 @@ public class Main {
        // cs.createAndSaveReport("/Users/florenthaxha/Work/GitRepoDoctor", "/Users/florenthaxha/School");
        // RepositoryInformation rii = new RepositoryInformation().fromJson(json);
        // System.out.println(rii);
-        
-       assert args.length == 1;
-       assert Files.exists(Paths.get(args[0]));
-       System.out.println(RepositoryInformation.build(args[0]).toJson());
+       List<GitObjectInformation> objects = GitObjectInformation.build("/Users/florenthaxha/School/Databases/gutenberg-backend");
+       
+       objects.forEach(GitObjectInformation -> System.out.println(GitObjectInformation.toString()));
+       
+       //assert args.length == 1;
+       //assert Files.exists(Paths.get(args[0]));
+       //System.out.println(RepositoryInformation.build(args[0]).toJson());
     }
     
 }
