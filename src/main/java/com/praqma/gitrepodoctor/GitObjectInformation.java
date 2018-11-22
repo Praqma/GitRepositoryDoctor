@@ -5,6 +5,8 @@
  */
 package com.praqma.gitrepodoctor;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,12 +26,13 @@ import java.util.stream.Stream;
  *
  * @author florenthaxha
  */
-public class GitObjectInformation {
+public class GitObjectInformation implements Comparable<GitObjectInformation>{
 
     private String sha;
     private String type;
     private Long sizeByte;
-
+    private final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    
     public GitObjectInformation(String sha, String type, Long sizeByte) {
         this.sha = sha;
         this.type = type;
@@ -115,6 +119,7 @@ public class GitObjectInformation {
                 }
                 
             }
+            Collections.sort(gitObjInfos);
         } catch (IOException | InterruptedException e) {
 
         } finally {
@@ -141,5 +146,12 @@ public class GitObjectInformation {
         }
      
         return idxPath.get().toString();
+    }
+
+    @Override
+    public int compareTo(GitObjectInformation o) {
+        if(sizeByte == o.sizeByte) return 0;
+        else if(sizeByte < o.sizeByte) return 1;
+        else return -1;
     }
 }
