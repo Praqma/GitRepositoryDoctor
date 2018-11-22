@@ -16,7 +16,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,98 +25,34 @@ import java.util.stream.Stream;
  *
  * @author florenthaxha
  */
-public class GitObjectInformation implements Comparable<GitObjectInformation>{
+public class GitObjectInformation {
 
-    private String sha;
-    private String type;
-    private Long sizeByte;
-    private final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    
-    public GitObjectInformation(String sha, String type, Long sizeByte) {
-        this.sha = sha;
-        this.type = type;
-        this.sizeByte = sizeByte;
+    private String repositoryPath;
+    private List<GitObject> gitObjects;
+
+    private final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
+    public GitObjectInformation(String repositoryPath, List<GitObject> gitObjects) {
+        this.repositoryPath = repositoryPath;
+        this.gitObjects = gitObjects;
     }
 
-    public String getSha() {
-        return sha;
-    }
-
-    public void setSha(String sha) {
-        this.sha = sha;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Long getSizeByte() {
-        return sizeByte;
-    }
-
-    public void setSizeByte(Long sizeByte) {
-        this.sizeByte = sizeByte;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + Objects.hashCode(this.sha);
-        hash = 41 * hash + Objects.hashCode(this.type);
-        hash = 41 * hash + Objects.hashCode(this.sizeByte);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final GitObjectInformation other = (GitObjectInformation) obj;
-        if (!Objects.equals(this.sha, other.sha)) {
-            return false;
-        }
-        if (!Objects.equals(this.type, other.type)) {
-            return false;
-        }
-        if (!Objects.equals(this.sizeByte, other.sizeByte)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "GitObjectInformation{" + "sha=" + sha + ", type=" + type + ", sizeByte=" + sizeByte + '}';
-    }
-
-    public static List<GitObjectInformation> build(String pathToRepository) {
-        
-        String idxPath = getIDXPath(pathToRepository);
+    public static GitObjectInformation build(String repoPath) {
+        String idxPath = getIDXPath(repoPath);
         BufferedReader reader = null;
-        List<GitObjectInformation> gitObjInfos = new ArrayList<>();
+        List<GitObject> gitObjInfos = new ArrayList<>();
         try {
-            Process exec = Runtime.getRuntime().exec("git verify-pack -v "+ idxPath);
+            Process exec = Runtime.getRuntime().exec("git verify-pack -v " + idxPath);
             exec.waitFor();
             reader = new BufferedReader(new InputStreamReader(exec.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] strs = line.split(" ");
-                if(strs[1].equals("blob")){
-                    GitObjectInformation goi = new GitObjectInformation(strs[0], strs[1], Long.parseLong(strs[4]));
+                if (strs[1].equals("blob")) {
+                    GitObject goi = new GitObject(strs[0], strs[1], Long.parseLong(strs[4]));
                     gitObjInfos.add(goi);
                 }
-                
+
             }
             Collections.sort(gitObjInfos);
         } catch (IOException | InterruptedException e) {
@@ -127,31 +62,49 @@ public class GitObjectInformation implements Comparable<GitObjectInformation>{
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    Logger.getLogger(GitObjectInformation.class.getName()).log(Level.SEVERE, null, e);
+                    Logger.getLogger(GitObject.class.getName()).log(Level.SEVERE, null, e);
                 }
             }
         }
-        return gitObjInfos;
+        return new GitObjectInformation(repoPath, gitObjInfos);
     }
 
-    private static String getIDXPath(String pathToRepository) {
-        
+    private static String getIDXPath(String repoPath) {
+
         Optional<Path> idxPath = null;
-        Path path = Paths.get(pathToRepository);
+        Path path = Paths.get(repoPath);
         try (Stream<Path> fileStream = Files.find(path, 999, (p, bfa) -> bfa.isRegularFile())) {
             idxPath = fileStream
                     .filter(file -> file.toString().matches("^.*\\.idx$")).findFirst();
         } catch (IOException e) {
-            Logger.getLogger(GitObjectInformation.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(GitObject.class.getName()).log(Level.SEVERE, null, e);
         }
-     
+
         return idxPath.get().toString();
     }
 
-    @Override
-    public int compareTo(GitObjectInformation o) {
-        if(sizeByte == o.sizeByte) return 0;
-        else if(sizeByte < o.sizeByte) return 1;
-        else return -1;
+    public String toJson() {
+        return GSON.toJson(this);
     }
+
+    public GitObjectInformation fromJson(String json) {
+        return GSON.fromJson(json, this.getClass());
+    }
+
+    public List<GitObject> getGitObjects() {
+        return gitObjects;
+    }
+
+    public void setGitObjects(List<GitObject> gitObjects) {
+        this.gitObjects = gitObjects;
+    }
+
+    public String getRepositoryPath() {
+        return repositoryPath;
+    }
+
+    public void setRepositoryPath(String repositoryPath) {
+        this.repositoryPath = repositoryPath;
+    }
+
 }

@@ -23,9 +23,8 @@ public class Main {
        // cs.createAndSaveReport("/Users/florenthaxha/Work/GitRepoDoctor", "/Users/florenthaxha/School");
        // RepositoryInformation rii = new RepositoryInformation().fromJson(json);
        // System.out.println(rii);
-       List<GitObjectInformation> objects = GitObjectInformation.build("/Users/florenthaxha/School/Databases/gutenberg-backend");
-       
-       objects.forEach(GitObjectInformation -> System.out.println(GitObjectInformation.toString()));
+       GitObjectInformation goi = GitObjectInformation.build("/Users/florenthaxha/School/Databases/gutenberg-backend");
+       goi.getGitObjects().forEach(GitObject -> System.out.println(GitObject.toString()));
        
        //assert args.length == 1;
        //assert Files.exists(Paths.get(args[0]));
