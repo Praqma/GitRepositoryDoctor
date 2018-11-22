@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,7 +93,7 @@ public class RepositoryInformation {
             fileInfos.add(fi);
             repoSize += fsize;
         }
-
+        Collections.sort(fileInfos);
         return new RepositoryInformation(path.getFileName().toString(), pathtoRepository, repoSize, fileInfos);
     }
 

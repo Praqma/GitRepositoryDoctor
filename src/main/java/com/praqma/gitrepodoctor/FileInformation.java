@@ -10,7 +10,7 @@ package com.praqma.gitrepodoctor;
  *
  * @author florenthaxha
  */
-public class FileInformation {
+public class FileInformation implements Comparable<FileInformation>{
     private String filename;
     private String filepath;
     private String filetype;
@@ -63,6 +63,18 @@ public class FileInformation {
 
     public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
+    }
+
+    @Override
+    public String toString() {
+        return "FileInformation{" + "filename=" + filename + ", filepath=" + filepath + ", filetype=" + filetype + ", gitfiletype=" + gitfiletype + ", fileSize=" + fileSize + '}';
+    }
+    
+    @Override
+    public int compareTo(FileInformation o) {
+        if(fileSize == o.fileSize) return 0;
+        else if(fileSize < o.fileSize) return 1;
+        else return -1;
     }
 
 

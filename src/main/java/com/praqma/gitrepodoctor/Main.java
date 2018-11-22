@@ -17,18 +17,27 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       // CreateStatistics cs = new CreateStatistics();
-       // String json = RepositoryInformation.build("/Users/florenthaxha/Work/GitRepoDoctor").toJson();
-       // System.out.println(json);
-       // cs.createAndSaveReport("/Users/florenthaxha/Work/GitRepoDoctor", "/Users/florenthaxha/School");
-       // RepositoryInformation rii = new RepositoryInformation().fromJson(json);
-       // System.out.println(rii);
-       GitObjectInformation goi = GitObjectInformation.build("/Users/florenthaxha/School/Databases/gutenberg-backend");
-       goi.getGitObjects().forEach(GitObject -> System.out.println(GitObject.toString()));
-       
-       //assert args.length == 1;
-       //assert Files.exists(Paths.get(args[0]));
-       //System.out.println(RepositoryInformation.build(args[0]).toJson());
+        // this only works on my machine
+        String pathtoRepository = "/Users/florenthaxha/School/Databases/gutenberg-backend";
+        
+        // CreateStatistics cs = new CreateStatistics();
+        
+        // String json = RepositoryInformation.build("/Users/florenthaxha/Work/GitRepoDoctor").toJson();
+        // System.out.println(json);
+
+        //RepositoryInformation ri = RepositoryInformation.build(pathtoRepository);
+        //ri.getFiles().forEach(FileInformation -> System.out.println(FileInformation.getFileSize()));
+        
+        // cs.createAndSaveReport("/Users/florenthaxha/Work/GitRepoDoctor", "/Users/florenthaxha/School");
+        // RepositoryInformation rii = new RepositoryInformation().fromJson(json);
+        // System.out.println(rii);
+        
+        //GitObjectInformation goi = GitObjectInformation.build("/Users/florenthaxha/School/Databases/gutenberg-backend");
+        //goi.getGitObjects().forEach(GitObject -> System.out.println(GitObject.toString()));
+        
+        //assert args.length == 1;
+        //assert Files.exists(Paths.get(args[0]));
+        //System.out.println(RepositoryInformation.build(args[0]).toJson());
     }
-    
+
 }
