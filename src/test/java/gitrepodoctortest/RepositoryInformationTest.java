@@ -6,8 +6,8 @@ package gitrepodoctortest;
  * and open the template in the editor.
  */
 
-import com.praqma.gitrepodoctor.FileInformation;
-import com.praqma.gitrepodoctor.RepositoryInformation;
+import com.praqma.gitrepodoctor.Entity.FileInformation;
+import com.praqma.gitrepodoctor.Entity.RepositoryInformation;
 import java.io.IOException;
 import java.util.List;
 import org.junit.After;

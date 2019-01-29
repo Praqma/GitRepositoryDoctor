@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.praqma.gitrepodoctor;
+package com.praqma.gitrepodoctor.Entity;
 
+import com.praqma.gitrepodoctor.Entity.GitObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
@@ -49,7 +50,7 @@ public class GitObjectInformation {
             while ((line = reader.readLine()) != null) {
                 String[] strs = line.split(" ");
                 if (strs[1].equals("blob")) {
-                    GitObject goi = new GitObject(strs[0], strs[1], Long.parseLong(strs[4]));
+                    GitObject goi = new GitObject(strs[0], Long.parseLong(strs[4]), Long.parseLong(strs[5]));
                     gitObjInfos.add(goi);
                 }
 

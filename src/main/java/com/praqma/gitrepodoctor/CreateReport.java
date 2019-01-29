@@ -5,6 +5,7 @@
  */
 package com.praqma.gitrepodoctor;
 
+import com.praqma.gitrepodoctor.Entity.RepositoryInformation;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;

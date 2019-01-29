@@ -5,6 +5,8 @@
  */
 package com.praqma.gitrepodoctor;
 
+import com.praqma.gitrepodoctor.Entity.GitObject;
+import com.praqma.gitrepodoctor.Entity.GitObjectInformation;
 import java.util.List;
 
 /**
@@ -18,7 +20,7 @@ public class Main {
      */
     public static void main(String[] args) {
         // this only works on my machine
-        String pathtoRepository = "/Users/florenthaxha/School/Databases/gutenberg-backend";
+        String pathtoRepository = "/Users/florenthaxha/Work/code-utils";
         
         // CreateStatistics cs = new CreateStatistics();
         
@@ -32,12 +34,12 @@ public class Main {
         // RepositoryInformation rii = new RepositoryInformation().fromJson(json);
         // System.out.println(rii);
         
-        //GitObjectInformation goi = GitObjectInformation.build("/Users/florenthaxha/School/Databases/gutenberg-backend");
-        //goi.getGitObjects().forEach(GitObject -> System.out.println(GitObject.toString()));
+        GitObjectInformation goi = GitObjectInformation.build(pathtoRepository);
+        goi.getGitObjects().forEach(GitObject -> System.out.println(GitObject.toString()));
         
         //assert args.length == 1;
         //assert Files.exists(Paths.get(args[0]));
         //System.out.println(RepositoryInformation.build(args[0]).toJson());
     }
-
+    
 }

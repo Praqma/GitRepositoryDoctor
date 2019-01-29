@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.praqma.gitrepodoctor;
+package com.praqma.gitrepodoctor.Entity;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.praqma.gitrepodoctor.CreateReport;
+import com.praqma.gitrepodoctor.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

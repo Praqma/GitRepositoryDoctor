@@ -66,7 +66,7 @@ public class FileUtils implements FileUtilsIF {
         } catch (IOException ex) {
             Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         return Filetypes.FILE_BINARY.toString();
     }
 
