@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,7 +71,7 @@ public class GitObjectInformation {
         return new GitObjectInformation(repoPath, gitObjInfos);
     }
 
-    private static String getIDXPath(String repoPath) {
+    private static String getIDXPath(String repoPath) throws NoSuchElementException {
 
         Optional<Path> idxPath = null;
         Path path = Paths.get(repoPath);
