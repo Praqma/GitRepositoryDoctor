@@ -70,4 +70,19 @@ public class FileUtils implements FileUtilsIF {
         return Filetypes.FILE_BINARY.toString();
     }
 
+    @Override
+    public Boolean gitRepacker(String RepoPath) {
+        Boolean resp = false;
+        try {
+            Process exec = Runtime.getRuntime().exec("git -C " + RepoPath + " repack -a -d --depth=250 --window=250");
+            exec.waitFor();
+            if(exec.exitValue()==0){resp = true;}
+            else {resp = false;}
+            
+        } catch (IOException | InterruptedException ex) {
+            Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resp;
+    }
+
 }

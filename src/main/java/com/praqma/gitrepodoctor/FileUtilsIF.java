@@ -16,5 +16,6 @@ public interface FileUtilsIF {
     String isGitBinary(File file);
     
     String isFileBinary(File file);
-
+    
+    Boolean gitRepacker(String RepoPath);
 }

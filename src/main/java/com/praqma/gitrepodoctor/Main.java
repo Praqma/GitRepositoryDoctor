@@ -5,9 +5,8 @@
  */
 package com.praqma.gitrepodoctor;
 
-import com.praqma.gitrepodoctor.Entity.GitObject;
 import com.praqma.gitrepodoctor.Entity.GitObjectInformation;
-import java.util.List;
+import com.praqma.gitrepodoctor.Entity.RepositoryInformation;
 
 /**
  *
@@ -18,22 +17,23 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // this only works on my machine
         String pathtoRepository = "/Users/florenthaxha/Work/code-utils";
         
-        // CreateStatistics cs = new CreateStatistics();
+        //CreateStatistics cs = new CreateStatistics();
         
-        // String json = RepositoryInformation.build("/Users/florenthaxha/Work/GitRepoDoctor").toJson();
+        String json = RepositoryInformation.build("/Users/florenthaxha/Work/newTestRepo").toJson();
         // System.out.println(json);
 
         //RepositoryInformation ri = RepositoryInformation.build(pathtoRepository);
         //ri.getFiles().forEach(FileInformation -> System.out.println(FileInformation.getFileSize()));
         
         // cs.createAndSaveReport("/Users/florenthaxha/Work/GitRepoDoctor", "/Users/florenthaxha/School");
-        // RepositoryInformation rii = new RepositoryInformation().fromJson(json);
-        // System.out.println(rii);
-        
+        RepositoryInformation rii = new RepositoryInformation().fromJson(json);
+        System.out.println(rii);
+        FileUtils fu = new FileUtils();
+        System.out.println(fu.gitRepacker(pathtoRepository));
         GitObjectInformation goi = GitObjectInformation.build(pathtoRepository);
         goi.getGitObjects().forEach(GitObject -> System.out.println(GitObject.toString()));
         

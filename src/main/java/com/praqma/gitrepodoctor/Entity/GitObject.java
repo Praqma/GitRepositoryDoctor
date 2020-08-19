@@ -20,13 +20,15 @@ public class GitObject implements Comparable<GitObject>{
     private final String sha;
     private final Long fileSize;
     private final Long sizeInPackfile;
+    private final String fileName;
     private List<String> paths = new ArrayList();
     private final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    public GitObject(String sha, Long fileSize, Long sizeInPack) {
+    public GitObject(String sha, Long fileSize, Long sizeInPack, String fileName) {
         this.sha = sha;
         this.fileSize = fileSize;
         this.sizeInPackfile = sizeInPack;
+        this.fileName = fileName;
     }
     
     public String getSha() {
@@ -36,9 +38,17 @@ public class GitObject implements Comparable<GitObject>{
     public Long getSizeByte() {
         return fileSize;
     }
-
+    
+    public Long getSizeInPackfile() {
+        return sizeInPackfile;
+    }
+    
     public List<String> getPaths() {
         return paths;
+    }
+    
+    public String getFileName(){
+        return fileName;
     }
     
     public void addPath(String path){
@@ -73,22 +83,20 @@ public class GitObject implements Comparable<GitObject>{
         if (!Objects.equals(this.fileSize, other.fileSize)) {
             return false;
         }
-        if (!Objects.equals(this.sizeInPackfile, other.sizeInPackfile)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.sizeInPackfile, other.sizeInPackfile);
     }
-    
-    
+
     @Override
     public int compareTo(GitObject o) {
-        if(fileSize == o.fileSize) return 0;
+        if(Objects.equals(fileSize, o.fileSize)) return 0;
         else if(fileSize < o.fileSize) return 1;
         else return -1;
     }
 
     @Override
     public String toString() {
-        return "GitObject{" + "sha=" + sha + ", fileSize=" + fileSize + ", sizeInPack=" + sizeInPackfile + ", paths=" + paths + '}';
+        return "GitObject{" + "sha=" + sha + ", fileSize=" + fileSize + ", sizeInPackfile=" + sizeInPackfile + ", fileName=" + fileName + ", paths=" + paths + '}';
     }
+
+   
 }
