@@ -21,14 +21,16 @@ public class GitObject implements Comparable<GitObject>{
     private final Long fileSize;
     private final Long sizeInPackfile;
     private final String fileName;
+    private final Double percentageSize;
     private List<String> paths = new ArrayList();
     private final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    public GitObject(String sha, Long fileSize, Long sizeInPack, String fileName) {
+    public GitObject(String sha, Long fileSize, Double percentageSize , Long sizeInPack, String fileName) {
         this.sha = sha;
         this.fileSize = fileSize;
         this.sizeInPackfile = sizeInPack;
         this.fileName = fileName;
+        this.percentageSize = percentageSize;
     }
     
     public String getSha() {
@@ -37,6 +39,10 @@ public class GitObject implements Comparable<GitObject>{
 
     public Long getSizeByte() {
         return fileSize;
+    }
+
+    public Double getPercentageSize() {
+        return percentageSize;
     }
     
     public Long getSizeInPackfile() {
@@ -95,8 +101,7 @@ public class GitObject implements Comparable<GitObject>{
 
     @Override
     public String toString() {
-        return "GitObject{" + "sha=" + sha + ", fileSize=" + fileSize + ", sizeInPackfile=" + sizeInPackfile + ", fileName=" + fileName + ", paths=" + paths + '}';
+        return "GitObject{" + "sha=" + sha + ", fileSize=" + fileSize + ", sizeInPackfile=" + sizeInPackfile + ", percentageSize=" + percentageSize + "%, fileName=" + fileName + '}';
     }
 
-   
 }

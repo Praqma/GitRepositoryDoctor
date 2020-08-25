@@ -5,7 +5,6 @@
  */
 package com.praqma.gitrepodoctor.Entity;
 
-import com.praqma.gitrepodoctor.Entity.GitObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
@@ -20,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -40,26 +40,30 @@ public class GitObjectInformation {
         this.gitObjects = gitObjects;
     }
 
-    public static GitObjectInformation build(String repoPath) {
+    public static GitObjectInformation build(String repoPath) throws IOException {
         String idxPath = getIDXPath(repoPath);
         BufferedReader reader = null;
         List<GitObject> gitObjInfos = new ArrayList<>();
         HashMap<String, String> hmap = getAllFileShas(repoPath);
+        Long dirSize = getDirectorySize(repoPath);
+        System.out.println(dirSize+"bytes");
         if (idxPath != null) {
             try {
                 Process exec = Runtime.getRuntime().exec("git verify-pack -v " + idxPath);
-                exec.waitFor();
+                
                 reader = new BufferedReader(new InputStreamReader(exec.getInputStream()));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] strs = line.split(" ");
                     if (strs[1].equals("blob")) {
-                        GitObject goi = new GitObject(strs[0], Long.parseLong(strs[4]), Long.parseLong(strs[5]), hmap.get(strs[0]));
+                        Long fileSize = Long.parseLong(strs[4]);    
+                        GitObject goi = new GitObject(strs[0], fileSize, calcPercentage(fileSize, dirSize) , Long.parseLong(strs[5]), hmap.get(strs[0]));
                         gitObjInfos.add(goi);
                     }
 
                 }
                 Collections.sort(gitObjInfos);
+                exec.waitFor();
             } catch (IOException | InterruptedException e) {
 
             } finally {
@@ -81,7 +85,7 @@ public class GitObjectInformation {
         BufferedReader reader = null;
         try {
             Process exec = Runtime.getRuntime().exec("git --git-dir="+ repoPath +"/.git rev-list --objects --all");
-            exec.waitFor();
+            exec.waitFor(1, TimeUnit.MICROSECONDS);
             reader = new BufferedReader(new InputStreamReader(exec.getInputStream()));
             String line;
             while((line = reader.readLine()) != null){
@@ -115,6 +119,19 @@ public class GitObjectInformation {
         }
 
         return idxPath.get().toString();
+    }
+    
+    private static Double calcPercentage(long fileSize, long dirSize){
+        return (double)fileSize * 100 / dirSize;
+    }
+    
+    private static Long getDirectorySize(String dirpath) throws IOException{
+        Path directory = Paths.get(dirpath);
+        long size = Files.walk(directory)
+                .filter(p -> p.toFile().isFile())
+                .mapToLong(p -> p.toFile().length())
+                .sum();
+        return size;
     }
 
     public String toJson() {
