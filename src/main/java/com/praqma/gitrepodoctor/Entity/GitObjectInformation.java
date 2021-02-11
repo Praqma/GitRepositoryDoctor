@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -50,7 +49,6 @@ public class GitObjectInformation {
         if (idxPath != null) {
             try {
                 Process exec = Runtime.getRuntime().exec("git verify-pack -v " + idxPath);
-                
                 reader = new BufferedReader(new InputStreamReader(exec.getInputStream()));
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -84,8 +82,7 @@ public class GitObjectInformation {
         HashMap<String, String> hmap = new HashMap<>();
         BufferedReader reader = null;
         try {
-            Process exec = Runtime.getRuntime().exec("git --git-dir="+ repoPath +"/.git rev-list --objects --all");
-            exec.waitFor(1, TimeUnit.MICROSECONDS);
+            Process exec = Runtime.getRuntime().exec("git --git-dir="+ repoPath +" rev-list --objects --all");
             reader = new BufferedReader(new InputStreamReader(exec.getInputStream()));
             String line;
             while((line = reader.readLine()) != null){
@@ -94,6 +91,7 @@ public class GitObjectInformation {
                     hmap.put(strs[0], strs[1]);
                 }
             }
+            exec.waitFor();
         } catch (IOException | InterruptedException e) {
             Logger.getLogger(GitObject.class.getName()).log(Level.SEVERE, null, e);
         }finally{
@@ -103,7 +101,7 @@ public class GitObjectInformation {
                 Logger.getLogger(GitObjectInformation.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+        System.out.println(hmap.toString());
         return hmap;
     }
 
@@ -122,7 +120,7 @@ public class GitObjectInformation {
     }
     
     private static Double calcPercentage(long fileSize, long dirSize){
-        return (double)fileSize * 100 / dirSize;
+        return (double)fileSize / dirSize * 100;
     }
     
     private static Long getDirectorySize(String dirpath) throws IOException{
@@ -135,7 +133,27 @@ public class GitObjectInformation {
     }
 
     public String toJson() {
-        return GSON.toJson(this);
+        return GSON.toJson(this.gitObjects);
+    }
+    
+    public String toHtmlTable(){
+        String htmlTable = "";
+        htmlTable +="<table class='pure-table'>";
+        htmlTable +="<thead><tr>"
+                + "<th>Sha</th>"
+                + "<th>File Size</th>"
+                + "<th>Size in Packfile</th>"
+                + "<th>File Name</th>"
+                + "<th>Percentage Size</th>"
+                + "</tr></thead>";
+        htmlTable += this.gitObjects.stream().map((go) -> "<tr>"
+                + "<td>" + go.getSha() + "</td>"
+                        + "<td>" + go.getSizeByte() + "</td>"
+                                + "<td>" + go.getSizeInPackfile() + "</td>"
+                                        + "<td>" + go.getFileName() + "</td>"
+                                                + "<td>" + go.getPercentageSize() + "</td>"
+                                                        + "</tr>").reduce(htmlTable, String::concat);
+        return htmlTable;
     }
 
     public GitObjectInformation fromJson(String json) {

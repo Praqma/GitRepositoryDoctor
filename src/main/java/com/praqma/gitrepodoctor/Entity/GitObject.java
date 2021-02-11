@@ -61,6 +61,10 @@ public class GitObject implements Comparable<GitObject>{
         paths.add(path);
     }
     
+    public String toJson(){
+        return GSON.toJson(this);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;
